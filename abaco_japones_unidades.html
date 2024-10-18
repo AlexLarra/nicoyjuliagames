@@ -13,23 +13,27 @@
             margin: 0;
             padding: 0;
         }
+
         h1 {
-            margin-top: 30px;
+            margin-top: 60px;
             font-size: 28px;
             font-weight: 600;
             color: #2c3e50;
         }
+
         #number-display {
             font-size: 64px;
             font-weight: bold;
             margin: 20px 0;
             color: #2980b9;
         }
+
         #operation-history {
             font-size: 28px;
             margin-top: 10px;
             color: #7f8c8d;
         }
+
         #next-button {
             display: none;
             margin-top: 20px;
@@ -43,13 +47,53 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         #next-button:hover {
             background-color: #2980b9;
+        }
+
+        /* Estilo de la X para salir con tonos grisáceos */
+        .exit-button {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #7f8c8d; /* Color gris */
+            text-decoration: none;
+            background-color: white;
+            border: 2px solid #bdc3c7; /* Borde gris claro */
+            padding: 5px 10px;
+            border-radius: 50%;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .exit-button:hover {
+            background-color: #bdc3c7; /* Fondo gris más oscuro */
+            color: white; /* Texto blanco */
+        }
+
+        /* Ajustes para pantallas pequeñas */
+        @media (max-width: 600px) {
+            .exit-button {
+                font-size: 18px; /* Reducir el tamaño en pantallas pequeñas */
+                top: 10px;
+                left: 10px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            #number-display {
+                font-size: 48px;
+            }
         }
     </style>
   </head>
 
   <body>
+    <!-- Botón de salir con la X en tonos grisáceos -->
+    <a href="index.html" class="exit-button">&times;</a>
+
     <h1>Práctica del Ábaco Japonés (Una Mano)</h1>
     <div id="number-display">0</div>
     <div id="operation-history"></div>
