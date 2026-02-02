@@ -4,65 +4,57 @@
   <meta charset="UTF-8">
   <title>Aprende a leer</title>
   <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background: linear-gradient(to bottom, #87CEEB, #DCDCDC);
-	  }
+    :root {
+      --bg-start: #96c7ff;
+      --bg-end: #f1f5f9;
+      --accent: #f8bc41;
+      --accent-strong: #e79b34;
+      --card: rgba(255, 255, 255, 0.9);
+      --text: #1f2d3d;
+    }
 
-    #word-container {
-      font-size: 10rem;
-      text-align: center;
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Nunito', 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(110% 120% at 15% 20%, #fffaf2 0, #f5f7fb 35%, #e4edff 65%, #d0e2ff 100%),
+        linear-gradient(180deg, var(--bg-start), var(--bg-end));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(16px, 4vw, 32px);
+    }
+
+    .app {
+      width: min(1100px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 18px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+      backdrop-filter: blur(8px);
     }
 
     #instructions {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 1.2rem;
-      width: fix-content;
-    }
-
-    #audioBtn, #fullscreen-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 1.2rem;
-    }
-
-    #container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 20px;
-    }
-
-    #btn-previous,
-    #btn-next {
-      font-size: 3rem;
-      text-align: center;
-      margin: 4rem;
-    }
-
-    button {
-      font-size: 20px;
-      font-weight: bold;
-      color: #fff;
-      background-color: #f8bc41;
-      border: none;
-      border-radius: 20px;
-      padding: 10px 20px;
-      box-shadow: 3px 3px 0 #e79b34;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-    }
-
-    button:hover {
-      background-color: #e79b34;
-      box-shadow: none;
+      position: static;
+      font-size: 1rem;
+      width: fit-content;
     }
 
     .dropdown {
@@ -73,37 +65,146 @@
     .dropbtn {
       width: 56px;
       height: 56px;
+      border-radius: 16px;
+      background: #0f172a;
+      color: #fff;
+      font-size: 1.25rem;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.25);
     }
 
     .dropdown-content {
       display: none;
       position: absolute;
-      background-color: #f9f9f9;
+      background-color: #ffffff;
       min-width: 200px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      box-shadow: 0px 10px 30px rgba(0,0,0,0.18);
       z-index: 1;
-      border-radius: 5px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 6px;
     }
 
     .dropdown-content a {
-      color: black;
+      color: #0f172a;
       padding: 12px 16px;
       text-decoration: none;
       display: block;
+      font-weight: 600;
+      letter-spacing: 0.02em;
     }
 
     .dropdown-content a:hover {
-      background-color: #f1f1f1;
+      background-color: #f1f5f9;
     }
 
     .dropdown:hover .dropdown-content {
       display: block;
     }
 
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    #audioBtn, #fullscreen-btn {
+      position: static;
+      font-size: 1.2rem;
+      padding: 12px 16px;
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.15);
+    }
+
+    #container {
+      display: grid;
+      grid-template-columns: minmax(96px, 130px) 1fr minmax(96px, 130px);
+      align-items: stretch;
+      gap: clamp(12px, 3vw, 24px);
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .word-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #word-container {
+      background: var(--card);
+      border-radius: 28px;
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: clamp(24px, 4vw, 40px);
+      width: 100%;
+      max-width: 100%;
+      font-size: clamp(3rem, 12vw, 7.5rem);
+      letter-spacing: 0.08em;
+      line-height: 1.05;
+      white-space: nowrap;
+      overflow: hidden;
+      min-height: clamp(200px, 35vh, 420px);
+      color: #0f172a;
+      border: 2px solid #f5deb3;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #word-container:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 28px 70px rgba(0,0,0,0.14);
+    }
+
+    #btn-previous,
+    #btn-next {
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      margin: 0;
+      height: 100%;
+      min-height: 120px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .nav-button button {
+      width: 100%;
+      height: 100%;
+    }
+
+    button {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+      background-color: var(--accent);
+      border: none;
+      border-radius: 16px;
+      padding: 10px 20px;
+      box-shadow: 0 12px 24px rgba(232, 165, 43, 0.35);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: var(--accent-strong);
+      box-shadow: 0 8px 16px rgba(231, 155, 52, 0.35);
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
     .modal {
       display: none;
       position: fixed;
-      z-index: 1;
+      z-index: 10;
       left: 0;
       top: 0;
       width: 100%;
@@ -125,15 +226,41 @@
       display: none;
     }
 
-    @media screen and (max-width: 768px) {
-      #word-container {
-        font-size: 5rem;
+    @media screen and (max-width: 900px) {
+      .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .top-actions {
+        justify-content: flex-end;
+      }
+
+      #container {
+        grid-template-columns: 1fr;
       }
 
       #btn-previous,
       #btn-next {
-        font-size: 1.5rem;
-        margin: 2rem;
+        min-height: 90px;
+      }
+
+      #word-container {
+        font-size: clamp(2.8rem, 14vw, 6rem);
+        min-height: 220px;
+      }
+    }
+
+    @media screen and (max-width: 540px) {
+      #word-container {
+        font-size: clamp(2.4rem, 15vw, 5.5rem);
+        padding: 20px;
+        min-height: 200px;
+      }
+
+      #btn-previous,
+      #btn-next {
+        min-height: 72px;
       }
     }
   </style>
@@ -143,24 +270,36 @@
     <img id="image-modal"></img>
   </div>
 
-  <div id="instructions">
-    <div class="dropdown">
-      <button class="dropbtn">&#x2699;</button>
-      <div class="dropdown-content">
-        <a href="javascript:changeMode()">&uarr; Mayúsculas</a>
-        <a href="javascript:toggleRandom()">&#x267B; Aleatorias</a>
-        <a href="index.html">&#x2716; Salir</a>
+  <div class="app">
+    <div class="top-bar">
+      <div id="instructions">
+        <div class="dropdown">
+          <button class="dropbtn">&#x2699;</button>
+          <div class="dropdown-content">
+            <a href="javascript:changeMode()">&uarr; Mayúsculas</a>
+            <a href="javascript:toggleRandom()">&#x267B; Aleatorias</a>
+            <a href="index.html">&#x2716; Salir</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button id="audioBtn" class="hide">&#x1F50A;</button>
+        <button id="fullscreen-btn">&#x26F6;</button>
       </div>
     </div>
-  </div>
 
-  <button id="audioBtn" class="hide">&#x1F50A;</button>
-  <button id="fullscreen-btn">&#x26F6;</button>
-
-  <div id="container">
-    <button id="btn-previous" onclick="javascript:previousWord()">&larr;</button>
-    <div id="word-container"></div>
-    <button id="btn-next" onclick="javascript:nextWord()">&rarr;</button>
+    <div id="container">
+      <div class="nav-button">
+        <button id="btn-previous" onclick="javascript:previousWord()">&larr;</button>
+      </div>
+      <div class="word-card">
+        <div id="word-container"></div>
+      </div>
+      <div class="nav-button">
+        <button id="btn-next" onclick="javascript:nextWord()">&rarr;</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -195,7 +334,8 @@
           break;
       }
 
-      document.getElementById("word-container").textContent = word;
+      wordContainer.textContent = word;
+      fitWord();
       setCookie("word", word.toLowerCase(), 30);
     }
 
@@ -285,6 +425,21 @@
     const modal = document.getElementById("modal");
     const imageModal = document.getElementById("image-modal");
 
+    function fitWord() {
+      const minSize = 64;
+      const maxSize = 340;
+      const letters = Math.max(wordContainer.textContent.length, 1);
+      const byWidth = wordContainer.clientWidth / (letters * 0.22);
+      const byHeight = wordContainer.clientHeight * 0.95;
+      let size = Math.min(maxSize, Math.max(minSize, Math.min(byWidth, byHeight)));
+      wordContainer.style.fontSize = size + "px";
+
+      while ((wordContainer.scrollWidth > wordContainer.clientWidth - 8 || wordContainer.scrollHeight > wordContainer.clientHeight - 8) && size > minSize) {
+        size -= 1;
+        wordContainer.style.fontSize = size + "px";
+      }
+    }
+
     function showImageModal(imageSrc) {
       imageModal.src = imageSrc;
       modal.style.display = "flex";
@@ -305,6 +460,8 @@
     modal.addEventListener("click", () => {
       modal.style.display = "none";
     });
+
+    window.addEventListener('resize', fitWord);
 
     const fullscreenBtn = document.getElementById('fullscreen-btn');
 
