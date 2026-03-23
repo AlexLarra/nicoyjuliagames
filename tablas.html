@@ -257,8 +257,8 @@
       </div>
 
       <div class="table-info">
-        <span>Tablas activas: <strong id="active-tables">1, 2, 3, 4, 5, 9, 10</strong></span>
-        <span>Desactivadas: <strong id="disabled-tables">6, 7, 8</strong></span>
+        <span>Tablas activas: <strong id="active-tables"></strong></span>
+        <span>Desactivadas: <strong id="disabled-tables"></strong></span>
       </div>
 
       <div class="question-box">
@@ -287,10 +287,12 @@
 
   <script>
     const TABLE_NUMBERS = [1, 2, 3, 4, 5, /*6*/, /*7*/, /*8*/, 9, 10];
-    const DISABLED_TABLES = [6, 7, 8];
     const ACTIVE_TABLES = TABLE_NUMBERS.filter(Number.isFinite);
-    const MULTIPLIERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const ALL_TABLES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const DISABLED_TABLES = ALL_TABLES.filter((n) => !ACTIVE_TABLES.includes(n));
+    const MULTIPLIERS = ALL_TABLES;
     const totalQuestions = 10;
+
     let questions = [];
     let current = 0;
     let score = 0;
