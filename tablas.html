@@ -75,13 +75,6 @@
       letter-spacing: 0.01em;
     }
 
-    .subtitle {
-      margin: 0;
-      color: var(--muted);
-      font-size: 17px;
-      line-height: 1.5;
-    }
-
     .card {
       background: var(--card);
       border-radius: 20px;
@@ -98,6 +91,20 @@
       color: var(--muted);
       font-weight: 700;
       letter-spacing: 0.02em;
+    }
+
+    .table-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .table-info strong {
+      color: var(--text);
     }
 
     .question-box {
@@ -241,13 +248,17 @@
     <header>
       <a class="back-link" href="index.html">&#x2190; Volver</a>
       <h1>Tablas de multiplicar</h1>
-      <p class="subtitle">Responde 10 preguntas de las tablas del 1 al 10. Después verás en qué fallaste para repasarlo.</p>
     </header>
 
     <div class="card">
       <div class="status-row">
         <span id="progress">Pregunta 1 de 10</span>
         <span id="score">Aciertos: 0</span>
+      </div>
+
+      <div class="table-info">
+        <span>Tablas activas: <strong id="active-tables">1, 2, 3, 4, 5, 9, 10</strong></span>
+        <span>Desactivadas: <strong id="disabled-tables">6, 7, 8</strong></span>
       </div>
 
       <div class="question-box">
@@ -275,6 +286,10 @@
   </div>
 
   <script>
+    const TABLE_NUMBERS = [1, 2, 3, 4, 5, /*6*/, /*7*/, /*8*/, 9, 10];
+    const DISABLED_TABLES = [6, 7, 8];
+    const ACTIVE_TABLES = TABLE_NUMBERS.filter(Number.isFinite);
+    const MULTIPLIERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const totalQuestions = 10;
     let questions = [];
     let current = 0;
@@ -293,27 +308,31 @@
     const mistakesList = document.getElementById('mistakes');
     const mistakeTitle = document.getElementById('mistake-title');
     const restartBtn = document.getElementById('restart');
+    const activeTablesEl = document.getElementById('active-tables');
+    const disabledTablesEl = document.getElementById('disabled-tables');
 
-    function randomTableQuestion() {
-      const a = Math.floor(Math.random() * 10) + 1;
-      const b = Math.floor(Math.random() * 10) + 1;
-      return { a, b, answer: a * b };
+    function shuffle(array) {
+      return array
+        .map((value) => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value);
     }
 
     function createQuestionSet() {
-      const set = new Set();
-      const list = [];
+      const combinations = [];
 
-      while (list.length < totalQuestions) {
-        const q = randomTableQuestion();
-        const key = `${q.a}x${q.b}`;
-        if (!set.has(key)) {
-          set.add(key);
-          list.push(q);
-        }
-      }
+      ACTIVE_TABLES.forEach((a) => {
+        MULTIPLIERS.forEach((b) => {
+          combinations.push({ a, b, answer: a * b });
+        });
+      });
 
-      return list.sort(() => Math.random() - 0.5);
+      return shuffle(combinations).slice(0, totalQuestions);
+    }
+
+    function setTableLabels() {
+      activeTablesEl.textContent = ACTIVE_TABLES.join(', ');
+      disabledTablesEl.textContent = DISABLED_TABLES.join(', ');
     }
 
     function showQuestion() {
@@ -326,6 +345,8 @@
       answerInput.value = '';
       answerInput.focus();
     }
+
+
 
     function handleAnswer(event) {
       event.preventDefault();
@@ -392,6 +413,7 @@
       summaryEl.style.display = 'none';
       mistakeTitle.style.display = 'none';
       mistakesList.innerHTML = '';
+      setTableLabels();
       showQuestion();
     }
 
