@@ -253,6 +253,7 @@
     <div class="card">
       <div class="status-row">
         <span id="progress">Pregunta 1 de 10</span>
+        <span id="streak">Racha: 0</span>
         <span id="score">Aciertos: 0</span>
       </div>
 
@@ -299,6 +300,7 @@
     let score = 0;
     let wrongAnswers = [];
     let finished = false;
+    let streak = 0;
 
     const questionEl = document.getElementById('question');
     const progressEl = document.getElementById('progress');
@@ -313,6 +315,7 @@
     const restartBtn = document.getElementById('restart');
     const activeTablesEl = document.getElementById('active-tables');
     const disabledTablesEl = document.getElementById('disabled-tables');
+    const streakEl = document.getElementById('streak');
 
     function shuffle(array) {
       return array
@@ -391,6 +394,14 @@
       summaryEl.style.display = 'block';
       finalScoreEl.textContent = `Has acertado ${score} de ${totalQuestions}.`;
 
+      // Actualizar racha: +1 si perfecto, -2 si hay errores (mínimo 0)
+      if (wrongAnswers.length === 0) {
+        streak += 1;
+      } else {
+        streak = Math.max(0, streak - 2);
+      }
+      streakEl.textContent = `Racha: ${streak}`;
+
       mistakesList.innerHTML = '';
       if (wrongAnswers.length === 0) {
         mistakeTitle.style.display = 'none';
@@ -417,6 +428,7 @@
       mistakeTitle.style.display = 'none';
       mistakesList.innerHTML = '';
       setTableLabels();
+      streakEl.textContent = `Racha: ${streak}`;
       showQuestion();
     }
 
